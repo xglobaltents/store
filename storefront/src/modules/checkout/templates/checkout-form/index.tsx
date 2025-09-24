@@ -20,13 +20,7 @@ export default async function CheckoutForm({
   const shippingMethods = await listCartShippingMethods(cart.id)
   const paymentMethods = await listCartPaymentMethods(cart.region?.id ?? "")
 
-  // Debug logging
-  console.log("Cart region ID:", cart.region?.id)
-  console.log("Payment methods:", paymentMethods)
-  console.log("Payment methods length:", paymentMethods?.length)
-
   if (!shippingMethods || !paymentMethods) {
-    console.log("Missing methods - shipping:", !!shippingMethods, "payment:", !!paymentMethods)
     return null
   }
 

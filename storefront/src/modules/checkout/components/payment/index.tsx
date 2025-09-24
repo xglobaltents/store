@@ -143,6 +143,8 @@ const Payment = ({
       </div>
       <div>
         <div className={isOpen ? "block" : "hidden"}>
+          {console.log("After refresh - availablePaymentMethods:", availablePaymentMethods)}
+          {console.log("After refresh - isOpen:", isOpen)}
           {!paidByGiftcard && availablePaymentMethods?.length && (
             <>
               <RadioGroup
@@ -150,10 +152,13 @@ const Payment = ({
                 onChange={(value: string) => setSelectedPaymentMethod(value)}
               >
                 {availablePaymentMethods
-                  .sort((a, b) => {
-                    return a.id > b.id ? 1 : -1
+                  ?.sort((a, b) => {
+                    // Safe sorting with fallback
+                    const aId = a?.id || '';
+                    const bId = b?.id || '';
+                    return aId.localeCompare(bId);
                   })
-                  .map((paymentMethod) => {
+                  ?.map((paymentMethod) => {
                     return (
                       <PaymentContainer
                         paymentInfoMap={paymentInfoMap}

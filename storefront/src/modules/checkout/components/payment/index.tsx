@@ -142,7 +142,7 @@ const Payment = ({
         )}
       </div>
       <div>
-        <div className={isOpen ? "block" : "hidden"}>
+        <div className="block">
           {console.log("Payment debug - availablePaymentMethods:", availablePaymentMethods)}
           {console.log("Payment debug - paidByGiftcard:", paidByGiftcard)}
           {console.log("Payment debug - isOpen:", isOpen)}
@@ -156,7 +156,7 @@ const Payment = ({
               >
                 {availablePaymentMethods
                   .sort((a, b) => {
-                    return a.provider_id > b.provider_id ? 1 : -1
+                    return a.id > b.id ? 1 : -1
                   })
                   .map((paymentMethod) => {
                     return (

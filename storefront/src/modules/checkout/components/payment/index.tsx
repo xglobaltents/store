@@ -143,8 +143,6 @@ const Payment = ({
       </div>
       <div>
         <div className={isOpen ? "block" : "hidden"}>
-          {console.log("After refresh - availablePaymentMethods:", availablePaymentMethods)}
-          {console.log("After refresh - isOpen:", isOpen)}
           {!paidByGiftcard && availablePaymentMethods?.length && (
             <>
               <RadioGroup

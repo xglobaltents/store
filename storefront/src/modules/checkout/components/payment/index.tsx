@@ -145,6 +145,9 @@ const Payment = ({
         <div className={isOpen ? "block" : "hidden"}>
           {console.log("Payment debug - availablePaymentMethods:", availablePaymentMethods)}
           {console.log("Payment debug - paidByGiftcard:", paidByGiftcard)}
+          {console.log("Payment debug - isOpen:", isOpen)}
+          {console.log("Payment debug - availablePaymentMethods.length:", availablePaymentMethods?.length)}
+          {console.log("Payment debug - condition result:", !paidByGiftcard && availablePaymentMethods?.length)}
           {!paidByGiftcard && availablePaymentMethods?.length && (
             <>
               <RadioGroup

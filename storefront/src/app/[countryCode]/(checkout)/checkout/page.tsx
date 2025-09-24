@@ -27,11 +27,8 @@ const fetchCart = async () => {
 }
 
 export default async function Checkout() {
-  console.log("DEBUG - Checkout page loading...")
   const cart = await fetchCart()
-  console.log("DEBUG - Cart fetched:", cart)
   const customer = await getCustomer()
-  console.log("DEBUG - Customer fetched:", customer)
 
   return (
     <div className="grid grid-cols-1 small:grid-cols-[1fr_416px] content-container gap-x-40 py-12">

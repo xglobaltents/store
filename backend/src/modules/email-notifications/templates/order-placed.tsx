@@ -11,17 +11,21 @@ const formatCurrency = (amount: number, currencyCode: string): string => {
     // Medusa stores amounts in the smallest currency unit (e.g., cents for USD, fils for AED)
     // Convert to major unit by dividing by 100
     const majorAmount = amount / 100;
+    const upperCurrencyCode = currencyCode.toUpperCase();
     
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: currencyCode.toUpperCase(),
+    // Use Intl.NumberFormat for proper formatting with comma separators
+    const formatted = new Intl.NumberFormat('en-US', {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
+      useGrouping: true, // Ensures comma separators for thousands
     }).format(majorAmount);
+    
+    return `${upperCurrencyCode} ${formatted}`;
   } catch (error) {
-    // Fallback if currency formatting fails
+    // Fallback if formatting fails
     const majorAmount = amount / 100;
-    return `${currencyCode.toUpperCase()} ${majorAmount.toFixed(2)}`;
+    const upperCurrencyCode = currencyCode.toUpperCase();
+    return `${upperCurrencyCode} ${majorAmount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
   }
 }
 

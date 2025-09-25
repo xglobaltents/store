@@ -5,6 +5,26 @@ import { OrderDTO, OrderAddressDTO } from '@medusajs/framework/types'
 
 export const ORDER_PLACED = 'order-placed'
 
+// Currency formatting helper function
+const formatCurrency = (amount: number, currencyCode: string): string => {
+  try {
+    // Medusa stores amounts in the smallest currency unit (e.g., cents for USD, fils for AED)
+    // Convert to major unit by dividing by 100
+    const majorAmount = amount / 100;
+    
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: currencyCode.toUpperCase(),
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }).format(majorAmount);
+  } catch (error) {
+    // Fallback if currency formatting fails
+    const majorAmount = amount / 100;
+    return `${currencyCode.toUpperCase()} ${majorAmount.toFixed(2)}`;
+  }
+}
+
 interface OrderPlacedPreviewProps {
   order: OrderDTO & { display_id: string; summary: { raw_current_order_total: { value: number } } }
   shippingAddress: OrderAddressDTO
@@ -47,7 +67,7 @@ export const OrderPlacedTemplate: React.FC<OrderPlacedTemplateProps> & {
           Order Date: {new Date(order.created_at).toLocaleDateString()}
         </Text>
         <Text style={{ margin: '0 0 20px' }}>
-          Total: {order.summary.raw_current_order_total.value} {order.currency_code}
+          Total: {formatCurrency(order.summary.raw_current_order_total.value, order.currency_code)}
         </Text>
 
         <Hr style={{ margin: '20px 0' }} />
@@ -97,7 +117,7 @@ export const OrderPlacedTemplate: React.FC<OrderPlacedTemplateProps> & {
             }}>
               <Text>{item.title} - {item.product_title}</Text>
               <Text>{item.quantity}</Text>
-              <Text>{item.unit_price} {order.currency_code}</Text>
+              <Text>{formatCurrency(item.unit_price, order.currency_code)}</Text>
             </div>
           ))}
         </div>
@@ -114,8 +134,8 @@ OrderPlacedTemplate.PreviewProps = {
     email: 'test@example.com',
     currency_code: 'USD',
     items: [
-      { id: 'item-1', title: 'Item 1', product_title: 'Product 1', quantity: 2, unit_price: 10 },
-      { id: 'item-2', title: 'Item 2', product_title: 'Product 2', quantity: 1, unit_price: 25 }
+      { id: 'item-1', title: 'Item 1', product_title: 'Product 1', quantity: 2, unit_price: 1000 }, // $10.00
+      { id: 'item-2', title: 'Item 2', product_title: 'Product 2', quantity: 1, unit_price: 2500 }  // $25.00
     ],
     shipping_address: {
       first_name: 'Test',
@@ -126,7 +146,7 @@ OrderPlacedTemplate.PreviewProps = {
       postal_code: '12345',
       country_code: 'US'
     },
-    summary: { raw_current_order_total: { value: 45 } }
+    summary: { raw_current_order_total: { value: 4500 } } // $45.00
   },
   shippingAddress: {
     first_name: 'Test',

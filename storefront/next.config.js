@@ -48,6 +48,10 @@ const nextConfig = {
         protocol: "https",
         hostname: "*.railway.app",
       },
+      { // Add specific bucket domain for your images
+        protocol: "https",
+        hostname: "bucket-production-2b4c.up.railway.app",
+      },
       { // Add common file storage domains
         protocol: "https",
         hostname: "*.amazonaws.com",

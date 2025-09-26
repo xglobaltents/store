@@ -28,7 +28,7 @@ const Hero = ({ region }: HeroProps) => {
           {/* Centered Company Logo */}
           <div className="flex justify-center items-center my-8">
             <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
-              width="150px" height="auto" viewBox="0 0 1250.000000 475.000000"
+              width="150px" viewBox="0 0 1250.000000 475.000000"
               preserveAspectRatio="xMidYMid meet">
               <g transform="translate(0.000000,475.000000) scale(0.100000,-0.100000)"
                 fill="#000000" stroke="none">

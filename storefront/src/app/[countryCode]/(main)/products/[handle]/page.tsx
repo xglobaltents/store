@@ -43,8 +43,8 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { handle } = params
-  const region = await getRegion(params.countryCode)
+  const { handle, countryCode } = params
+  const region = await getRegion(countryCode)
 
   if (!region) {
     notFound()
@@ -56,13 +56,19 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     notFound()
   }
 
+  // Get country name for dynamic metadata
+  const countryName = region?.countries?.[0]?.display_name || "the Middle East"
+  const currencyCode = region?.currency_code?.toUpperCase() || "USD"
+
   return {
-    title: `${product.title} | xGlobal Tents Store`,
-    description: `${product.title}`,
+    title: `${product.title} - Premium Tent Solutions | XGlobal Tents ${countryName}`,
+    description: `${product.description || product.title} - High-quality tent solutions available in ${countryName}. Professional aluminum tents and modular structures with ${currencyCode} pricing. Shop XGlobal Tents.`,
+    keywords: `${product.title}, aluminum tents, tent structures, ${countryName}, tent manufacturer, ${product.handle}, XGlobal Tents`,
     openGraph: {
-      title: `${product.title} | xGlobal Tents Store`,
-      description: `${product.title}`,
+      title: `${product.title} | XGlobal Tents ${countryName}`,
+      description: `${product.description || product.title} - Available in ${countryName}`,
       images: product.thumbnail ? [product.thumbnail] : [],
+      type: 'product',
     },
   }
 }

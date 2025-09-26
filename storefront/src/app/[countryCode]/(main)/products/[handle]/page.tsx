@@ -68,7 +68,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title: `${product.title} | XGlobal Tents ${countryName}`,
       description: `${product.description || product.title} - Available in ${countryName}`,
       images: product.thumbnail ? [product.thumbnail] : [],
-      type: 'product',
+      type: 'website',
     },
   }
 }

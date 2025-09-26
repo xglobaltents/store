@@ -85,31 +85,18 @@ const ShippingInfoTab = () => {
         <div className="flex items-start gap-x-2">
           <FastDelivery />
           <div>
-            <span className="font-semibold">Fast delivery</span>
+            <span className="font-semibold">Delivery</span>
             <p className="max-w-sm">
-              Your package will arrive in 3-5 business days at your pick up
-              location or in the comfort of your home.
-            </p>
-          </div>
-        </div>
-        <div className="flex items-start gap-x-2">
-          <Refresh />
-          <div>
-            <span className="font-semibold">Simple exchanges</span>
-            <p className="max-w-sm">
-              Is the fit not quite right? No worries - we&apos;ll exchange your
-              product for a new one.
+              Your tent will be delivered as per the date requested, but normally within 10 working days to your specified location.
             </p>
           </div>
         </div>
         <div className="flex items-start gap-x-2">
           <Back />
           <div>
-            <span className="font-semibold">Easy returns</span>
-            <p className="max-w-sm">
-              Just return your product and we&apos;ll refund your money. No
-              questions asked – we&apos;ll do our best to make sure your return
-              is hassle-free.
+            <span className="font-semibold">Returns</span>
+            <p className="max-w-sm mt-4 text-xs text-ui-fg-muted">
+              <strong>Important:</strong> Your sales contract, product description, and terms of service must be extremely clear and accurate. This includes specifications like dimensions, materials, color, and features. The more detailed your contract, the less room there is for disputes over whether the tent is &quot;as per the contract.&quot;
             </p>
           </div>
         </div>

@@ -26,7 +26,7 @@ const nextConfig = {
       },
       { // Note: only needed when using local-file for product media
         protocol: "https",
-        hostname: process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL?.replace('https://', ''),
+        hostname: process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL?.replace(/^https?:\/\//, ''),
       },
       { // Note: can be removed after deleting demo products
         protocol: "https",
@@ -44,6 +44,14 @@ const nextConfig = {
         protocol: "https",
         hostname: process.env.NEXT_PUBLIC_MINIO_ENDPOINT,
       }] : []),
+      { // Add Railway domain patterns for backend images
+        protocol: "https",
+        hostname: "*.railway.app",
+      },
+      { // Add common file storage domains
+        protocol: "https",
+        hostname: "*.amazonaws.com",
+      },
     ],
   },
   serverRuntimeConfig: {

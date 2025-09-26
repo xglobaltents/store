@@ -8,7 +8,7 @@ export const ORDER_PLACED = 'order-placed'
 // Currency formatting helper function
 const formatCurrency = (amount: number, currencyCode: string): string => {
   try {
-    // Medusa stores amounts in the smallest currency unit (e.g., cents for USD, fils for AED)
+    // xGlobal Tents stores amounts in the smallest currency unit (e.g., cents for USD, fils for AED)
     // Convert to major unit by dividing by 100
     const majorAmount = amount / 100;
     const upperCurrencyCode = currencyCode.toUpperCase();

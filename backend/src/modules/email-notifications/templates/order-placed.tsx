@@ -44,6 +44,11 @@ export const isOrderPlacedTemplateData = (data: any): data is OrderPlacedTemplat
 export const OrderPlacedTemplate: React.FC<OrderPlacedTemplateProps> & {
   PreviewProps: OrderPlacedPreviewProps
 } = ({ order, shippingAddress, preview = 'Your order has been placed!' }) => {
+  // Calculate breakdown values from order data
+  const itemsSubtotal = order.items.reduce((sum, item) => sum + (item.unit_price * item.quantity), 0)
+  const shippingTotal = 0 // You can add shipping calculation if needed
+  const taxTotal = order.summary.raw_current_order_total.value - itemsSubtotal - shippingTotal
+  
   return (
     <Base preview={preview}>
       <Section>
@@ -122,6 +127,38 @@ export const OrderPlacedTemplate: React.FC<OrderPlacedTemplateProps> & {
               <Text>{formatCurrency(item.unit_price, order.currency_code)}</Text>
             </div>
           ))}
+        </div>
+
+        <Hr style={{ margin: '20px 0' }} />
+
+        <Text style={{ fontSize: '18px', fontWeight: 'bold', margin: '0 0 15px' }}>
+          Order Breakdown
+        </Text>
+
+        <div style={{ margin: '10px 0' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', padding: '5px 0' }}>
+            <Text>Subtotal (excl. shipping and taxes):</Text>
+            <Text>{formatCurrency(itemsSubtotal, order.currency_code)}</Text>
+          </div>
+          
+          <div style={{ display: 'flex', justifyContent: 'space-between', padding: '5px 0' }}>
+            <Text>Shipping:</Text>
+            <Text>{formatCurrency(shippingTotal, order.currency_code)}</Text>
+          </div>
+          
+          <div style={{ display: 'flex', justifyContent: 'space-between', padding: '5px 0' }}>
+            <Text>Taxes:</Text>
+            <Text>{formatCurrency(taxTotal, order.currency_code)}</Text>
+          </div>
+          
+          <Hr style={{ margin: '10px 0', borderColor: '#ddd' }} />
+          
+          <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', fontSize: '18px', fontWeight: 'bold' }}>
+            <Text style={{ fontWeight: 'bold', fontSize: '16px' }}>Total:</Text>
+            <Text style={{ fontWeight: 'bold', fontSize: '16px' }}>
+              {formatCurrency(order.summary.raw_current_order_total.value, order.currency_code)}
+            </Text>
+          </div>
         </div>
       </Section>
     </Base>

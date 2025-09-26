@@ -5,6 +5,9 @@ import ProductTemplate from "@modules/products/templates"
 import { getRegion, listRegions } from "@lib/data/regions"
 import { getProductByHandle, getProductsList } from "@lib/data/products"
 
+// Revalidate product pages every 60 seconds
+export const revalidate = 60
+
 type Props = {
   params: { countryCode: string; handle: string }
 }

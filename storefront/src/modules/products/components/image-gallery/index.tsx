@@ -9,8 +9,6 @@ type ImageGalleryProps = {
 }
 
 const ImageGallery = ({ images }: ImageGalleryProps) => {
-  console.log("ImageGallery images:", images) // Debug log
-  
   if (!images || images.length === 0) {
     return (
       <div className="flex items-start relative">
@@ -27,7 +25,6 @@ const ImageGallery = ({ images }: ImageGalleryProps) => {
     <div className="flex items-start relative">
       <div className="flex flex-col flex-1 small:mx-16 gap-y-4">
         {images.map((image, index) => {
-          console.log(`Image ${index}:`, image.url) // Debug log
           return (
             <Container
               key={image.id}

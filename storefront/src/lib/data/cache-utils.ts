@@ -6,7 +6,8 @@ import { revalidateTag } from "next/cache"
 export async function invalidateProductCache() {
   try {
     revalidateTag("products")
-    console.log("Product cache invalidated successfully")
+    revalidateTag("images")
+    console.log("Product and image cache invalidated successfully")
   } catch (error) {
     console.error("Failed to invalidate product cache:", error)
   }
@@ -18,7 +19,7 @@ export async function invalidateProductCache() {
 export async function invalidateAllCache() {
   try {
     // Invalidate common cache tags
-    const tags = ["products", "collections", "regions", "categories"]
+    const tags = ["products", "collections", "regions", "categories", "images"]
     
     for (const tag of tags) {
       revalidateTag(tag)

@@ -8,9 +8,8 @@ export const ORDER_PLACED = 'order-placed'
 // Currency formatting helper function
 const formatCurrency = (amount: number, currencyCode: string): string => {
   try {
-    // xGlobal Tents stores amounts in the smallest currency unit (e.g., cents for USD, fils for AED)
-    // Convert to major unit by dividing by 100
-    const majorAmount = amount / 100;
+    // For xGlobal Tents, amounts are already in major units (not minor units)
+    // So we don't need to divide by 100
     const upperCurrencyCode = currencyCode.toUpperCase();
     
     // Use Intl.NumberFormat for proper formatting with comma separators
@@ -18,14 +17,13 @@ const formatCurrency = (amount: number, currencyCode: string): string => {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
       useGrouping: true, // Ensures comma separators for thousands
-    }).format(majorAmount);
+    }).format(amount);
     
     return `${upperCurrencyCode} ${formatted}`;
   } catch (error) {
     // Fallback if formatting fails
-    const majorAmount = amount / 100;
     const upperCurrencyCode = currencyCode.toUpperCase();
-    return `${upperCurrencyCode} ${majorAmount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    return `${upperCurrencyCode} ${amount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
   }
 }
 

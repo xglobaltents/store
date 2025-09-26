@@ -116,7 +116,7 @@ export default async function Footer() {
                     rel="noreferrer"
                     className="hover:text-ui-fg-base"
                   >
-                    xGlobal Tents 
+                    xGlobal Tents UAE
                   </a>
                 </li>
                 <li>

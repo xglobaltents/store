@@ -1,6 +1,5 @@
-import { Modules } from '@medusajs/utils'
-
-const {
+import { loadEnv, Modules, defineConfig } from '@medusajs/utils';
+import {
   ADMIN_CORS,
   AUTH_CORS,
   BACKEND_URL,
@@ -23,107 +22,132 @@ const {
   MINIO_BUCKET,
   MEILISEARCH_HOST,
   MEILISEARCH_ADMIN_KEY
-} = process.env
+} from 'lib/constants';
 
-export default {
+loadEnv(process.env.NODE_ENV, process.cwd());
+
+const medusaConfig = {
   projectConfig: {
     databaseUrl: DATABASE_URL,
+    databaseLogging: false,
+    redisUrl: REDIS_URL,
+    workerMode: WORKER_MODE,
     http: {
-      storeCors: STORE_CORS,
       adminCors: ADMIN_CORS,
       authCors: AUTH_CORS,
+      storeCors: STORE_CORS,
       jwtSecret: JWT_SECRET,
       cookieSecret: COOKIE_SECRET
     },
-    workerMode: WORKER_MODE === 'shared' ? 'shared' : 'worker',
-    admin: SHOULD_DISABLE_ADMIN === 'true' ? { disable: true } : {}
+    build: {
+      rollupOptions: {
+        external: ["@medusajs/dashboard"]
+      }
+    }
   },
-  modules: {
-    [Modules.FILE]: {
+  admin: {
+    backendUrl: BACKEND_URL,
+    disable: SHOULD_DISABLE_ADMIN,
+  },
+  modules: [
+    {
+      key: Modules.FILE,
       resolve: '@medusajs/file',
       options: {
         providers: [
-          {
-            resolve: MINIO_ENDPOINT ? './src/modules/minio-file' : '@medusajs/file-local',
-            id: MINIO_ENDPOINT ? 'minio' : 'local',
-            options: MINIO_ENDPOINT ? {
+          ...(MINIO_ENDPOINT && MINIO_ACCESS_KEY && MINIO_SECRET_KEY ? [{
+            resolve: './src/modules/minio-file',
+            id: 'minio',
+            options: {
               endPoint: MINIO_ENDPOINT,
               accessKey: MINIO_ACCESS_KEY,
               secretKey: MINIO_SECRET_KEY,
-              bucket: MINIO_BUCKET
-            } : {
+              bucket: MINIO_BUCKET // Optional, default: medusa-media
+            }
+          }] : [{
+            resolve: '@medusajs/file-local',
+            id: 'local',
+            options: {
               upload_dir: 'static',
               backend_url: `${BACKEND_URL}/static`
             }
-          }
+          }])
         ]
       }
     },
-    [Modules.EVENT_BUS]: REDIS_URL ? {
+    ...(REDIS_URL ? [{
+      key: Modules.EVENT_BUS,
       resolve: '@medusajs/event-bus-redis',
       options: {
         redisUrl: REDIS_URL
       }
-    } : undefined,
-    [Modules.WORKFLOW_ENGINE]: REDIS_URL ? {
+    },
+    {
+      key: Modules.WORKFLOW_ENGINE,
       resolve: '@medusajs/workflow-engine-redis',
       options: {
-        redis: { url: REDIS_URL },
-        timeout: 300000,
-        retryDelay: 5000,
-        maxRetries: 3
+        redis: {
+          url: REDIS_URL,
+        }
       }
-    } : undefined,
-    [Modules.NOTIFICATION]: (SENDGRID_API_KEY || RESEND_API_KEY) ? {
+    }] : []),
+    ...(SENDGRID_API_KEY && SENDGRID_FROM_EMAIL || RESEND_API_KEY && RESEND_FROM_EMAIL ? [{
+      key: Modules.NOTIFICATION,
       resolve: '@medusajs/notification',
       options: {
         providers: [
-          ...(SENDGRID_API_KEY ? [{
+          ...(SENDGRID_API_KEY && SENDGRID_FROM_EMAIL ? [{
             resolve: '@medusajs/notification-sendgrid',
             id: 'sendgrid',
             options: {
               channels: ['email'],
               api_key: SENDGRID_API_KEY,
-              from: SENDGRID_FROM_EMAIL
+              from: SENDGRID_FROM_EMAIL,
             }
           }] : []),
-          ...(RESEND_API_KEY ? [{
+          ...(RESEND_API_KEY && RESEND_FROM_EMAIL ? [{
             resolve: './src/modules/email-notifications',
             id: 'resend',
             options: {
               channels: ['email'],
               api_key: RESEND_API_KEY,
-              from: RESEND_FROM_EMAIL
-            }
-          }] : [])
+              from: RESEND_FROM_EMAIL,
+            },
+          }] : []),
         ]
       }
-    } : undefined,
-    [Modules.PAYMENT]: STRIPE_API_KEY ? {
+    }] : []),
+    ...(STRIPE_API_KEY && STRIPE_WEBHOOK_SECRET ? [{
+      key: Modules.PAYMENT,
       resolve: '@medusajs/payment',
       options: {
-        providers: [{
-          resolve: '@medusajs/payment-stripe',
-          id: 'stripe',
-          options: {
-            apiKey: STRIPE_API_KEY,
-            webhookSecret: STRIPE_WEBHOOK_SECRET
-          }
-        }]
-      }
-    } : undefined,
-    [Modules.FULFILLMENT]: {
+        providers: [
+          {
+            resolve: '@medusajs/payment-stripe',
+            id: 'stripe',
+            options: {
+              apiKey: STRIPE_API_KEY,
+              webhookSecret: STRIPE_WEBHOOK_SECRET,
+            },
+          },
+        ],
+      },
+    }] : []),
+    {
+      key: Modules.FULFILLMENT,
       resolve: '@medusajs/fulfillment',
       options: {
-        providers: [{
-          resolve: '@medusajs/fulfillment-manual',
-          id: 'manual'
-        }]
-      }
-    }
-  },
+        providers: [
+          {
+            resolve: '@medusajs/fulfillment-manual',
+            id: 'manual',
+          },
+        ],
+      },
+    },
+  ],
   plugins: [
-    ...(MEILISEARCH_HOST ? [{
+  ...(MEILISEARCH_HOST && MEILISEARCH_ADMIN_KEY ? [{
       resolve: '@rokmohar/medusa-plugin-meilisearch',
       options: {
         config: {
@@ -138,12 +162,15 @@ export default {
             indexSettings: {
               searchableAttributes: ['title', 'description', 'variant_sku'],
               displayedAttributes: ['id', 'handle', 'title', 'description', 'variant_sku', 'thumbnail'],
-              filterableAttributes: ['id', 'handle']
+              filterableAttributes: ['id', 'handle'],
             },
-            primaryKey: 'id'
+            primaryKey: 'id',
           }
         }
       }
     }] : [])
   ]
-}
+};
+
+console.log(JSON.stringify(medusaConfig, null, 2));
+export default defineConfig(medusaConfig);

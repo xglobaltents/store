@@ -39,6 +39,9 @@ export default {
     admin: SHOULD_DISABLE_ADMIN === 'true' ? { disable: true } : {}
   },
   modules: {
+    [Modules.API_KEY]: {
+      resolve: '@medusajs/api-key'
+    },
     [Modules.FILE]: {
       resolve: '@medusajs/file',
       options: {

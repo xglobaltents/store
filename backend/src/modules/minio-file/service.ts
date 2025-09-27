@@ -245,7 +245,7 @@ class MinioFileProviderService extends AbstractFileProviderService {
   ): Promise<{ 
     url: string, 
     fields: Record<string, any>,
-    fileKey: string 
+    file_key: string 
   }> {
     const parsedFilename = path.parse(fileData.filename)
     const fileKey = `${parsedFilename.name}-${ulid()}${parsedFilename.ext}`
@@ -264,7 +264,7 @@ class MinioFileProviderService extends AbstractFileProviderService {
         fields: {
           'Content-Type': fileData.mimeType || 'application/octet-stream'
         },
-        fileKey: fileKey
+        file_key: fileKey
       }
     } catch (error) {
       this.logger_.error(`Failed to generate presigned upload URL: ${error.message}`)
@@ -280,7 +280,7 @@ class MinioFileProviderService extends AbstractFileProviderService {
   ): Promise<{ 
     url: string, 
     fields: Record<string, any>,
-    fileKey: string 
+    file_key: string 
   }> {
     return this.getUploadStreamDescriptor(fileData)
   }

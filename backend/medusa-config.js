@@ -1,4 +1,4 @@
-import { loadEnv, Modules, defineConfig } from '@medusajs/utils';
+import { Modules } from '@medusajs/utils';
 import {
   ADMIN_CORS,
   AUTH_CORS,
@@ -23,8 +23,6 @@ import {
   MEILISEARCH_HOST,
   MEILISEARCH_ADMIN_KEY
 } from 'lib/constants';
-
-loadEnv(process.env.NODE_ENV, process.cwd());
 
 const medusaConfig = {
   projectConfig: {
@@ -88,7 +86,10 @@ const medusaConfig = {
       options: {
         redis: {
           url: REDIS_URL,
-        }
+        },
+        timeout: 300000, // 5 minutes timeout
+        retryDelay: 5000, // 5 second retry delay
+        maxRetries: 3
       }
     }] : []),
     ...(SENDGRID_API_KEY && SENDGRID_FROM_EMAIL || RESEND_API_KEY && RESEND_FROM_EMAIL ? [{
@@ -100,7 +101,7 @@ const medusaConfig = {
             resolve: '@medusajs/notification-sendgrid',
             id: 'sendgrid',
             options: {
-              channels: ['email'],
+              channels: ['email', 'feed'],
               api_key: SENDGRID_API_KEY,
               from: SENDGRID_FROM_EMAIL,
             }
@@ -109,7 +110,7 @@ const medusaConfig = {
             resolve: './src/modules/email-notifications',
             id: 'resend',
             options: {
-              channels: ['email'],
+              channels: ['email', 'feed'],
               api_key: RESEND_API_KEY,
               from: RESEND_FROM_EMAIL,
             },
@@ -173,4 +174,4 @@ const medusaConfig = {
 };
 
 console.log(JSON.stringify(medusaConfig, null, 2));
-export default defineConfig(medusaConfig);
+export default medusaConfig;

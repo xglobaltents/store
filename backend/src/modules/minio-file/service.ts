@@ -260,9 +260,11 @@ class MinioFileProviderService extends AbstractFileProviderService {
         url: presignedUrl,
         fields: {
           'Content-Type': fileData.mimeType || 'text/csv',
-          key: fileKey
+          key: fileKey,
+          'x-amz-meta-file-key': fileKey
         },
-        file_key: fileKey
+        file_key: fileKey,
+        fileKey: fileKey // Also provide camelCase version
       }
       
       this.logger_.info(`Returning presigned upload response: ${JSON.stringify(response)}`)
@@ -298,6 +300,51 @@ class MinioFileProviderService extends AbstractFileProviderService {
   // Additional method that might be expected
   async createPresignedUrl(fileData: any): Promise<any> {
     return this.getPresignedPostSignature(fileData)
+  }
+
+  // Method to handle file info after upload
+  async getFileInfo(fileKey: string): Promise<any> {
+    try {
+      const stat = await this.client.statObject(this.bucket, fileKey)
+      return {
+        file_key: fileKey,
+        url: `https://${this.config_.endPoint}/${this.bucket}/${fileKey}`,
+        size: stat.size,
+        mimetype: stat.metaData?.['content-type'] || 'application/octet-stream'
+      }
+    } catch (error) {
+      this.logger_.error(`Failed to get file info: ${error.message}`)
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `File not found: ${fileKey}`
+      )
+    }
+  }
+
+  // Method to handle upload completion
+  async handleUploadComplete(fileKey: string): Promise<any> {
+    this.logger_.info(`Upload completed for file: ${fileKey}`)
+    
+    try {
+      // Verify file exists
+      const stat = await this.client.statObject(this.bucket, fileKey)
+      const url = `https://${this.config_.endPoint}/${this.bucket}/${fileKey}`
+      
+      return {
+        file_key: fileKey,
+        fileKey: fileKey,
+        key: fileKey,
+        url: url,
+        size: stat.size,
+        mimeType: stat.metaData?.['content-type'] || 'application/octet-stream'
+      }
+    } catch (error) {
+      this.logger_.error(`Failed to verify uploaded file: ${error.message}`)
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Uploaded file not found: ${fileKey}`
+      )
+    }
   }
 }
 

@@ -1,4 +1,4 @@
-import { Modules } from '@medusajs/utils'
+import { Modules } from '@medusajs/utils';
 
 const {
   ADMIN_CORS,
@@ -23,7 +23,7 @@ const {
   MINIO_BUCKET,
   MEILISEARCH_HOST,
   MEILISEARCH_ADMIN_KEY
-} = process.env
+} = process.env;
 
 export default {
   projectConfig: {

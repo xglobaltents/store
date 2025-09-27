@@ -198,10 +198,8 @@ class MinioFileProviderService extends AbstractFileProviderService {
     fileData: ProviderDeleteFileDTO
   ): Promise<void> {
     if (!fileData?.fileKey) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        'No file key provided'
-      )
+      this.logger_.warn('No file key provided for deletion - skipping')
+      return
     }
 
     try {

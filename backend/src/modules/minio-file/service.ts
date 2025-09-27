@@ -249,6 +249,29 @@ class MinioFileProviderService extends AbstractFileProviderService {
       fields: {}
     }
   }
+
+  // Alternative method names that Medusa might expect
+  async getUploadStreamDescriptor(fileData: any): Promise<any> {
+    return this.getPresignedPostSignature(fileData)
+  }
+
+  async getPresignedUploadUrl(fileData: any): Promise<any> {
+    return this.getPresignedPostSignature(fileData)
+  }
+
+  async getPresignedUrl(fileData: any): Promise<any> {
+    return this.getPresignedPostSignature(fileData)
+  }
+
+  // Method to check if provider supports presigned uploads
+  supportsPresignedUpload(): boolean {
+    return true
+  }
+
+  // Additional method that might be expected
+  async createPresignedUrl(fileData: any): Promise<any> {
+    return this.getPresignedPostSignature(fileData)
+  }
 }
 
 export default MinioFileProviderService

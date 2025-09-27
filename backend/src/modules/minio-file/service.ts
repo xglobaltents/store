@@ -274,6 +274,21 @@ class MinioFileProviderService extends AbstractFileProviderService {
       )
     }
   }
+
+  async getPresignedUploadUrl(
+    fileData: ProviderUploadFileDTO
+  ): Promise<{ 
+    url: string, 
+    fields: Record<string, any>,
+    fileKey: string 
+  }> {
+    return this.getUploadStreamDescriptor(fileData)
+  }
+
+  // Method to check if provider supports presigned uploads
+  supportsPresignedUpload(): boolean {
+    return true
+  }
 }
 
 export default MinioFileProviderService

@@ -240,11 +240,33 @@ class MinioFileProviderService extends AbstractFileProviderService {
 
   // Add support for presigned upload URLs (required for imports)
   async getPresignedPostSignature(fileData: any): Promise<any> {
-    // Return a simple response that bypasses presigned upload
-    // This allows imports to work without image uploads
-    return {
-      url: `https://${this.config_.endPoint}/${this.bucket}`,
-      fields: {}
+    const parsedFilename = path.parse(fileData.filename || 'upload.csv')
+    const fileKey = `${parsedFilename.name}-${ulid()}${parsedFilename.ext}`
+
+    try {
+      // Generate presigned PUT URL for MinIO
+      const presignedUrl = await this.client.presignedPutObject(
+        this.bucket,
+        fileKey,
+        24 * 60 * 60 // URL expires in 24 hours
+      )
+
+      this.logger_.info(`Generated presigned upload URL for file ${fileKey}`)
+
+      // Return structure expected by Medusa frontend
+      return {
+        url: presignedUrl,
+        fields: {
+          'Content-Type': fileData.mimeType || 'text/csv'
+        },
+        file_key: fileKey
+      }
+    } catch (error) {
+      this.logger_.error(`Failed to generate presigned upload URL: ${error.message}`)
+      throw new MedusaError(
+        MedusaError.Types.UNEXPECTED_STATE,
+        `Failed to generate presigned upload URL: ${error.message}`
+      )
     }
   }
 

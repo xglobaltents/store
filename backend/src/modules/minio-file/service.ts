@@ -264,7 +264,10 @@ class MinioFileProviderService extends AbstractFileProviderService {
           'x-amz-meta-file-key': fileKey
         },
         file_key: fileKey,
-        fileKey: fileKey // Also provide camelCase version
+        fileKey: fileKey, // Also provide camelCase version
+        // Additional fields that might be expected
+        id: fileKey,
+        key: fileKey
       }
       
       this.logger_.info(`Returning presigned upload response: ${JSON.stringify(response)}`)

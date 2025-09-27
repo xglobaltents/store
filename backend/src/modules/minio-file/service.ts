@@ -259,13 +259,19 @@ class MinioFileProviderService extends AbstractFileProviderService {
 
       this.logger_.info(`Generated presigned upload URL for file ${fileKey}`)
       
-      return {
+      const response = {
         url: presignedUrl,
         fields: {
-          'Content-Type': fileData.mimeType || 'application/octet-stream'
+          'Content-Type': fileData.mimeType || 'application/octet-stream',
+          key: fileKey,
+          file_key: fileKey
         },
         file_key: fileKey
       }
+      
+      this.logger_.info(`Returning presigned upload response: ${JSON.stringify(response)}`)
+      
+      return response
     } catch (error) {
       this.logger_.error(`Failed to generate presigned upload URL: ${error.message}`)
       throw new MedusaError(

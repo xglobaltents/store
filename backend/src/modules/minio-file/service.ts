@@ -262,6 +262,43 @@ class MinioFileProviderService extends AbstractFileProviderService {
     }
   }
 
+  async getAsBuffer(
+    fileData: ProviderGetFileDTO
+  ): Promise<Buffer> {
+    if (!fileData?.fileKey) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        'No file key provided'
+      )
+    }
+
+    try {
+      this.logger_.info(`Getting file as buffer for file ${fileData.fileKey}`)
+      const stream = await this.client.getObject(this.bucket, fileData.fileKey)
+      
+      // Convert stream to buffer
+      const chunks: Buffer[] = []
+      return new Promise((resolve, reject) => {
+        stream.on('data', (chunk) => chunks.push(chunk))
+        stream.on('end', () => {
+          const buffer = Buffer.concat(chunks)
+          this.logger_.info(`Successfully converted file ${fileData.fileKey} to buffer (${buffer.length} bytes)`)
+          resolve(buffer)
+        })
+        stream.on('error', (error) => {
+          this.logger_.error(`Failed to convert file ${fileData.fileKey} to buffer: ${error.message}`)
+          reject(error)
+        })
+      })
+    } catch (error) {
+      this.logger_.error(`Failed to get file as buffer: ${error.message}`)
+      throw new MedusaError(
+        MedusaError.Types.UNEXPECTED_STATE,
+        `Failed to get file as buffer: ${error.message}`
+      )
+    }
+  }
+
   // Add support for presigned upload URLs (required for imports)
   async getPresignedPostSignature(fileData: any): Promise<any> {
     this.logger_.info(`getPresignedPostSignature called with: ${JSON.stringify(fileData)}`)

@@ -240,6 +240,8 @@ class MinioFileProviderService extends AbstractFileProviderService {
 
   // Add support for presigned upload URLs (required for imports)
   async getPresignedPostSignature(fileData: any): Promise<any> {
+    this.logger_.info(`getPresignedPostSignature called with: ${JSON.stringify(fileData)}`)
+    
     const parsedFilename = path.parse(fileData.filename || 'upload.csv')
     const fileKey = `${parsedFilename.name}-${ulid()}${parsedFilename.ext}`
 
@@ -254,13 +256,18 @@ class MinioFileProviderService extends AbstractFileProviderService {
       this.logger_.info(`Generated presigned upload URL for file ${fileKey}`)
 
       // Return structure expected by Medusa frontend
-      return {
+      const response = {
         url: presignedUrl,
         fields: {
-          'Content-Type': fileData.mimeType || 'text/csv'
+          'Content-Type': fileData.mimeType || 'text/csv',
+          key: fileKey
         },
         file_key: fileKey
       }
+      
+      this.logger_.info(`Returning presigned upload response: ${JSON.stringify(response)}`)
+
+      return response
     } catch (error) {
       this.logger_.error(`Failed to generate presigned upload URL: ${error.message}`)
       throw new MedusaError(

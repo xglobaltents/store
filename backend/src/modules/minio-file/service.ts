@@ -251,6 +251,7 @@ class MinioFileProviderService extends AbstractFileProviderService {
     const fileKey = `${parsedFilename.name}-${ulid()}${parsedFilename.ext}`
 
     try {
+      // Create presigned URL 
       const presignedUrl = await this.client.presignedPutObject(
         this.bucket,
         fileKey,
@@ -263,8 +264,9 @@ class MinioFileProviderService extends AbstractFileProviderService {
         url: presignedUrl,
         fields: {
           'Content-Type': fileData.mimeType || 'application/octet-stream',
-          key: fileKey,
-          file_key: fileKey
+          'x-amz-meta-original-filename': fileData.filename,
+          'x-amz-meta-file-key': fileKey,
+          key: fileKey
         },
         file_key: fileKey
       }
@@ -294,6 +296,17 @@ class MinioFileProviderService extends AbstractFileProviderService {
   // Method to check if provider supports presigned uploads
   supportsPresignedUpload(): boolean {
     return true
+  }
+
+  // Alternative method name that might be expected
+  async getPresignedUrl(
+    fileData: ProviderUploadFileDTO
+  ): Promise<{ 
+    url: string, 
+    fields: Record<string, any>,
+    file_key: string 
+  }> {
+    return this.getUploadStreamDescriptor(fileData)
   }
 }
 

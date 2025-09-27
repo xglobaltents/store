@@ -60,7 +60,7 @@ const medusaConfig = {
               endPoint: MINIO_ENDPOINT,
               accessKey: MINIO_ACCESS_KEY,
               secretKey: MINIO_SECRET_KEY,
-              bucket: MINIO_BUCKET // Optional, default: medusa-media
+              bucket: MINIO_BUCKET
             }
           }] : [{
             resolve: '@medusajs/file-local',
@@ -87,8 +87,8 @@ const medusaConfig = {
         redis: {
           url: REDIS_URL,
         },
-        timeout: 300000, // 5 minutes timeout
-        retryDelay: 5000, // 5 second retry delay
+        timeout: 300000,
+        retryDelay: 5000,
         maxRetries: 3
       }
     }] : []),
@@ -148,7 +148,7 @@ const medusaConfig = {
     },
   ],
   plugins: [
-  ...(MEILISEARCH_HOST && MEILISEARCH_ADMIN_KEY ? [{
+    ...(MEILISEARCH_HOST && MEILISEARCH_ADMIN_KEY ? [{
       resolve: '@rokmohar/medusa-plugin-meilisearch',
       options: {
         config: {

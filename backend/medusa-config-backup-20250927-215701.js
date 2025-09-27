@@ -1,4 +1,4 @@
-import { Modules } from '@medusajs/utils'
+import { Modules } from '@medusajs/utils';
 
 const {
   ADMIN_CORS,
@@ -23,7 +23,7 @@ const {
   MINIO_BUCKET,
   MEILISEARCH_HOST,
   MEILISEARCH_ADMIN_KEY
-} = process.env
+} = process.env;
 
 export default {
   projectConfig: {
@@ -126,6 +126,28 @@ export default {
     }
   },
   plugins: [
-    // MeiliSearch temporarily disabled due to compatibility issues
+    // Temporarily disabled MeiliSearch due to compatibility issues with Medusa v2.10.2
+    // ...(MEILISEARCH_HOST ? [{
+    //   resolve: '@rokmohar/medusa-plugin-meilisearch',
+    //   options: {
+    //     config: {
+    //       host: MEILISEARCH_HOST,
+    //       apiKey: MEILISEARCH_ADMIN_KEY
+    //     },
+    //     settings: {
+    //       products: {
+    //         type: 'products',
+    //         enabled: true,
+    //         fields: ['id', 'title', 'description', 'handle', 'variant_sku', 'thumbnail'],
+    //         indexSettings: {
+    //           searchableAttributes: ['title', 'description', 'variant_sku'],
+    //           displayedAttributes: ['id', 'handle', 'title', 'description', 'variant_sku', 'thumbnail'],
+    //           filterableAttributes: ['id', 'handle']
+    //         },
+    //         primaryKey: 'id'
+    //       }
+    //     }
+    //   }
+    // }] : [])
   ]
 }

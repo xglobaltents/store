@@ -9,6 +9,7 @@ import {
 import { Client } from 'minio';
 import * as path from 'path';
 import { ulid } from 'ulid';
+import { Readable } from 'stream';
 
 type InjectedDependencies = {
   logger: Logger
@@ -234,6 +235,29 @@ class MinioFileProviderService extends AbstractFileProviderService {
       throw new MedusaError(
         MedusaError.Types.UNEXPECTED_STATE,
         `Failed to generate presigned URL: ${error.message}`
+      )
+    }
+  }
+
+  async getDownloadStream(
+    fileData: ProviderGetFileDTO
+  ): Promise<Readable> {
+    if (!fileData?.fileKey) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        'No file key provided'
+      )
+    }
+
+    try {
+      this.logger_.info(`Getting download stream for file ${fileData.fileKey}`)
+      const stream = await this.client.getObject(this.bucket, fileData.fileKey)
+      return stream as Readable
+    } catch (error) {
+      this.logger_.error(`Failed to get download stream: ${error.message}`)
+      throw new MedusaError(
+        MedusaError.Types.UNEXPECTED_STATE,
+        `Failed to get download stream: ${error.message}`
       )
     }
   }

@@ -59,6 +59,12 @@ export default {
         ]
       }
     },
+    [Modules.PRODUCT]: {
+      resolve: '@medusajs/product'
+    },
+    [Modules.PRODUCT_CATEGORY]: {
+      resolve: '@medusajs/product-category'
+    },
     [Modules.EVENT_BUS]: REDIS_URL ? {
       resolve: '@medusajs/event-bus-redis',
       options: {

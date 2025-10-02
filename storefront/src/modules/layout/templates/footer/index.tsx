@@ -138,6 +138,22 @@ export default async function Footer() {
                     xGlobal Tents KSA
                   </a>
                 </li>
+                <li>
+                  <LocalizedClientLink
+                    href="/return-policy"
+                    className="hover:text-ui-fg-base"
+                  >
+                    Return Policy
+                  </LocalizedClientLink>
+                </li>
+                <li>
+                  <LocalizedClientLink
+                    href="/privacy-policy"
+                    className="hover:text-ui-fg-base"
+                  >
+                    Privacy Policy
+                  </LocalizedClientLink>
+                </li>
               </ul>
             </div>
           </div>

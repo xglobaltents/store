@@ -56,7 +56,7 @@ export default function ReturnPolicy() {
           <section className="mb-8">
             <h2 className="text-2xl font-semibold mb-4">Return Process</h2>
             <ol className="list-decimal list-inside space-y-2">
-              <li><strong>Contact Us:</strong> Email us at <a href="mailto:returns@xglobal-tents.com" className="text-blue-600 hover:underline">returns@xglobal-tents.com</a> or call +971-XX-XXX-XXXX</li>
+              <li><strong>Contact Us:</strong> Email us at <a href="mailto:cs@xglobal-tents.com" className="text-blue-600 hover:underline">cs@xglobal-tents.com</a> or call +971-04-836-9499</li>
               <li><strong>Provide Information:</strong> Include your order number, reason for return, and photos if applicable</li>
               <li><strong>Receive Authorization:</strong> We&apos;ll provide a Return Authorization (RA) number and instructions</li>
               <li><strong>Package Securely:</strong> Pack the item in its original packaging when possible</li>
@@ -105,8 +105,8 @@ export default function ReturnPolicy() {
           <section className="mb-8">
             <h2 className="text-2xl font-semibold mb-4">Contact Information</h2>
             <div className="bg-gray-50 p-6 rounded-lg">
-              <p><strong>Email:</strong> <a href="mailto:returns@xglobal-tents.com" className="text-blue-600 hover:underline">returns@xglobal-tents.com</a></p>
-              <p><strong>Phone:</strong> +971-XX-XXX-XXXX (Available 9 AM - 6 PM GST, Sunday - Thursday)</p>
+              <p><strong>Email:</strong> <a href="mailto:cs@xglobal-tents.com" className="text-blue-600 hover:underline">cs@xglobal-tents.com</a></p>
+              <p><strong>Phone:</strong> +971-04-836-9499 (Available 9 AM - 6 PM GST, Sunday - Thursday)</p>
               <p><strong>Address:</strong> xGlobal Tents LLC<br />
               Technopark - Mina Jebel Ali<br />
               Dubai, United Arab Emirates</p>

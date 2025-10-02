@@ -53,8 +53,8 @@ export default function PrivacyPolicy() {
             <h2 className="text-2xl font-semibold mb-4">Contact Us</h2>
             <p>
               If you have questions about this privacy policy, please contact us at{' '}
-              <a href="mailto:privacy@xglobal-tents.com" className="text-blue-600 hover:underline">
-                privacy@xglobal-tents.com
+              <a href="mailto:cs@xglobal-tents.com" className="text-blue-600 hover:underline">
+                cs@xglobal-tents.com
               </a>
             </p>
           </section>

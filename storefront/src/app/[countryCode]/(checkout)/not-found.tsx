@@ -16,4 +16,4 @@ export default async function NotFound() {
       <InteractiveLink href="/">Go to frontpage</InteractiveLink>
     </div>
   )
-}
+} 

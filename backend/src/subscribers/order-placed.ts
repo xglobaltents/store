@@ -10,8 +10,35 @@ export default async function orderPlacedHandler({
   const notificationModuleService: INotificationModuleService = container.resolve(Modules.NOTIFICATION)
   const orderModuleService: IOrderModuleService = container.resolve(Modules.ORDER)
   
-  const order = await orderModuleService.retrieveOrder(data.id, { relations: ['items', 'summary', 'shipping_address'] })
+  // Retrieve order with comprehensive relations to ensure we have all price data
+  const order = await orderModuleService.retrieveOrder(data.id, { 
+    relations: [
+      'items', 
+      'items.product', 
+      'items.variant',
+      'summary', 
+      'shipping_address',
+      'shipping_methods',
+      'payment_collections',
+      'payment_collections.payments'
+    ] 
+  })
   const shippingAddress = await (orderModuleService as any).orderAddressService_.retrieve(order.shipping_address.id)
+
+  console.log('Order data for email:', {
+    orderId: order.id,
+    displayId: order.display_id,
+    total: order.summary?.raw_current_order_total?.value,
+    currencyCode: order.currency_code,
+    itemsCount: order.items?.length,
+    items: order.items?.map(item => ({
+      id: item.id,
+      title: item.title,
+      quantity: item.quantity,
+      unitPrice: item.unit_price,
+      total: item.unit_price * item.quantity
+    }))
+  })
 
   try {
     await notificationModuleService.createNotifications({

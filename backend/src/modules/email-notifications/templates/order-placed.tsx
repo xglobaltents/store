@@ -5,28 +5,46 @@ import { OrderDTO, OrderAddressDTO } from '@medusajs/framework/types'
 
 export const ORDER_PLACED = 'order-placed'
 
-// Currency formatting helper function
-const formatCurrency = (amount: number, currencyCode: string): string => {
+// Currency formatting helper function - consistent with storefront formatting
+const formatCurrency = (amount: number | string, currencyCode: string): string => {
   try {
-    // xGlobal Tents stores amounts in the smallest currency unit (e.g., cents for USD, fils for AED)
-    // Convert to major unit by dividing by 100
-    const majorAmount = amount / 100;
+    // Convert to number if it's a string
+    const numericAmount = typeof amount === 'string' ? parseFloat(amount) : amount;
+    
+    // Medusa stores amounts in the smallest currency unit (e.g., cents for USD, fils for AED)
+    // For most currencies including AED, amounts are stored as integers representing the smallest unit
+    // So 35000 = 350.00 AED (divided by 100)
+    
+    const majorAmount = numericAmount / 100;
     const upperCurrencyCode = currencyCode.toUpperCase();
     
-    // Use Intl.NumberFormat for proper formatting with comma separators
+    // Use Intl.NumberFormat with currency style for proper formatting
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: upperCurrencyCode,
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }).format(majorAmount);
+  } catch (error) {
+    // Fallback formatting if currency code is invalid
+    const numericAmount = typeof amount === 'string' ? parseFloat(amount) : amount;
+    const majorAmount = numericAmount / 100;
+    const upperCurrencyCode = currencyCode.toUpperCase();
     const formatted = new Intl.NumberFormat('en-US', {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
-      useGrouping: true, // Ensures comma separators for thousands
+      useGrouping: true,
     }).format(majorAmount);
     
     return `${upperCurrencyCode} ${formatted}`;
-  } catch (error) {
-    // Fallback if formatting fails
-    const majorAmount = amount / 100;
-    const upperCurrencyCode = currencyCode.toUpperCase();
-    return `${upperCurrencyCode} ${majorAmount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
   }
+}
+
+// Helper function to safely convert BigNumberValue to number
+const toNumber = (value: any): number => {
+  if (typeof value === 'number') return value;
+  if (typeof value === 'string') return parseFloat(value) || 0;
+  return 0;
 }
 
 interface OrderPlacedPreviewProps {
@@ -71,7 +89,7 @@ export const OrderPlacedTemplate: React.FC<OrderPlacedTemplateProps> & {
           Order Date: {new Date(order.created_at).toLocaleDateString()}
         </Text>
         <Text style={{ margin: '0 0 20px' }}>
-          Total: {formatCurrency(order.summary.raw_current_order_total.value, order.currency_code)}
+          Total: {formatCurrency(toNumber(order.summary.raw_current_order_total.value), order.currency_code)}
         </Text>
 
         <Hr style={{ margin: '20px 0' }} />
@@ -105,25 +123,48 @@ export const OrderPlacedTemplate: React.FC<OrderPlacedTemplateProps> & {
             display: 'flex',
             justifyContent: 'space-between',
             backgroundColor: '#f2f2f2',
-            padding: '8px',
+            padding: '12px 8px',
             borderBottom: '1px solid #ddd'
           }}>
-            <Text style={{ fontWeight: 'bold' }}>Item</Text>
-            <Text style={{ fontWeight: 'bold' }}>Quantity</Text>
-            <Text style={{ fontWeight: 'bold' }}>Price</Text>
+            <Text style={{ fontWeight: 'bold', flex: '2' }}>Item</Text>
+            <Text style={{ fontWeight: 'bold', flex: '1', textAlign: 'center' }}>Quantity</Text>
+            <Text style={{ fontWeight: 'bold', flex: '1', textAlign: 'right' }}>Total Price</Text>
           </div>
           {order.items.map((item) => (
             <div key={item.id} style={{
               display: 'flex',
               justifyContent: 'space-between',
-              padding: '8px',
+              padding: '12px 8px',
               borderBottom: '1px solid #ddd'
             }}>
-              <Text>{item.title} - {item.product_title}</Text>
-              <Text>{item.quantity}</Text>
-              <Text>{formatCurrency(item.unit_price, order.currency_code)}</Text>
+              <Text style={{ flex: '2', paddingRight: '8px' }}>{item.title}</Text>
+              <Text style={{ flex: '1', textAlign: 'center' }}>{item.quantity}</Text>
+              <Text style={{ flex: '1', textAlign: 'right' }}>
+                {formatCurrency(toNumber(item.unit_price) * item.quantity, order.currency_code)}
+              </Text>
             </div>
           ))}
+        </div>
+
+        <Hr style={{ margin: '20px 0' }} />
+
+        <div style={{ textAlign: 'right', marginTop: '20px' }}>
+          <div style={{ fontSize: '16px', marginBottom: '8px' }}>
+            <Text>Subtotal: {formatCurrency(toNumber(order.summary.raw_current_order_total.value) - toNumber(order.shipping_total) - toNumber(order.tax_total), order.currency_code)}</Text>
+          </div>
+          {(order.shipping_total && toNumber(order.shipping_total) > 0) && (
+            <div style={{ fontSize: '16px', marginBottom: '8px' }}>
+              <Text>Shipping: {formatCurrency(toNumber(order.shipping_total), order.currency_code)}</Text>
+            </div>
+          )}
+          {(order.tax_total && toNumber(order.tax_total) > 0) && (
+            <div style={{ fontSize: '16px', marginBottom: '8px' }}>
+              <Text>Tax: {formatCurrency(toNumber(order.tax_total), order.currency_code)}</Text>
+            </div>
+          )}
+          <div style={{ fontSize: '18px', fontWeight: 'bold', borderTop: '2px solid #ddd', paddingTop: '8px' }}>
+            <Text>Total: {formatCurrency(toNumber(order.summary.raw_current_order_total.value), order.currency_code)}</Text>
+          </div>
         </div>
       </Section>
     </Base>
@@ -133,33 +174,40 @@ export const OrderPlacedTemplate: React.FC<OrderPlacedTemplateProps> & {
 OrderPlacedTemplate.PreviewProps = {
   order: {
     id: 'test-order-id',
-    display_id: 'ORD-123',
-    created_at: new Date().toISOString(),
-    email: 'test@example.com',
-    currency_code: 'USD',
+    display_id: '6',
+    created_at: new Date('2025-09-29').toISOString(),
+    email: 'maen.amer@example.com',
+    currency_code: 'AED',
     items: [
-      { id: 'item-1', title: 'Item 1', product_title: 'Product 1', quantity: 2, unit_price: 1000 }, // $10.00
-      { id: 'item-2', title: 'Item 2', product_title: 'Product 2', quantity: 1, unit_price: 2500 }  // $25.00
+      { 
+        id: 'item-1', 
+        title: 'Arch Tent- Arcum Tent', 
+        product_title: 'Arch Tent- Arcum Tent', 
+        quantity: 1, 
+        unit_price: 35000 // 350.00 AED in cents
+      }
     ],
     shipping_address: {
-      first_name: 'Test',
-      last_name: 'User',
-      address_1: '123 Main St',
-      city: 'Anytown',
-      province: 'CA',
-      postal_code: '12345',
-      country_code: 'US'
+      first_name: 'Maen',
+      last_name: 'Amer',
+      address_1: 'Technopark - Mina Jebel Ali',
+      city: 'Dubai',
+      province: 'Dubayy',
+      postal_code: '9038',
+      country_code: 'ae'
     },
-    summary: { raw_current_order_total: { value: 4500 } } // $45.00
+    summary: { raw_current_order_total: { value: 36750 } }, // 367.50 AED in cents
+    shipping_total: 1500, // 15.00 AED shipping
+    tax_total: 250 // 2.50 AED tax
   },
   shippingAddress: {
-    first_name: 'Test',
-    last_name: 'User',
-    address_1: '123 Main St',
-    city: 'Anytown',
-    province: 'CA',
-    postal_code: '12345',
-    country_code: 'US'
+    first_name: 'Maen',
+    last_name: 'Amer',
+    address_1: 'Technopark - Mina Jebel Ali',
+    city: 'Dubai',
+    province: 'Dubayy',
+    postal_code: '9038',
+    country_code: 'ae'
   }
 } as OrderPlacedPreviewProps
 

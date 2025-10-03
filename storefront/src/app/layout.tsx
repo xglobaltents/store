@@ -4,6 +4,7 @@ import Script from "next/script"
 import "styles/globals.css"
 import "./styles.css"
 import type { Viewport } from 'next'
+import SEOWrapper from "@modules/common/components/seo-wrapper"
  
 export const viewport: Viewport = {
   width: 'device-width',
@@ -66,7 +67,9 @@ export default function RootLayout(props: { children: React.ReactNode }) {
             zIndex: 1
           }}
         >
-          {props.children}
+          <SEOWrapper>
+            {props.children}
+          </SEOWrapper>
         </main>
         <div id="modal-root" style={{ position: 'relative', zIndex: 50 }} />
       </body>

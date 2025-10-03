@@ -27,7 +27,7 @@ export default function FAQSchema({ faqs }: FAQSchemaProps) {
     <Script
       id="faq-schema"
       type="application/ld+json"
-      strategy="afterInteractive"
+      strategy="lazyOnload"
       dangerouslySetInnerHTML={{
         __html: JSON.stringify(faqSchema)
       }}

@@ -27,7 +27,7 @@ export default function BreadcrumbSchema({ items, baseUrl = "https://xglobal-ten
     <Script
       id="breadcrumb-schema"
       type="application/ld+json"
-      strategy="afterInteractive"
+      strategy="lazyOnload"
       dangerouslySetInnerHTML={{
         __html: JSON.stringify(breadcrumbSchema)
       }}

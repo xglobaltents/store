@@ -65,7 +65,7 @@ export default function ProductRatingSchema({
     <Script
       id={`product-rating-schema-${product.id}`}
       type="application/ld+json"
-      strategy="afterInteractive"
+      strategy="lazyOnload"
       dangerouslySetInnerHTML={{
         __html: JSON.stringify(productSchema)
       }}

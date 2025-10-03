@@ -1,7 +1,8 @@
 'use client'
 
-import { useParams } from 'next/navigation'
+import { useParams, usePathname } from 'next/navigation'
 import { HttpTypes } from '@medusajs/types'
+import { useMemo } from 'react'
 import { 
   FAQSchema, 
   BreadcrumbSchema, 
@@ -26,30 +27,51 @@ export default function SEOWrapper({
   product,
   region,
   customFAQs,
-  showStoreRating = true,
+  showStoreRating = false, // Changed default to false
   storeRating = 4.8,
   storeReviewCount = 156
 }: SEOWrapperProps) {
   const params = useParams()
+  const pathname = usePathname()
   const countryCode = params?.countryCode as string || 'ae'
+  
+  // Only generate breadcrumbs for non-root pages to improve performance
+  const shouldShowBreadcrumbs = useMemo(() => {
+    const segments = pathname.split('/').filter(Boolean)
+    return segments.length > 1 // Only show if more than just country code
+  }, [pathname])
+  
   const breadcrumbs = useBreadcrumbs(countryCode)
 
-  // Get region-specific FAQs
-  const regionFAQs = customFAQs || commonFAQs[countryCode as keyof typeof commonFAQs] || commonFAQs.ae
+  // Only show FAQs on specific pages to reduce DOM load
+  const shouldShowFAQs = useMemo(() => {
+    return pathname.includes('/products/') || 
+           pathname === `/${countryCode}` || 
+           pathname === '/' ||
+           pathname.includes('/collections/')
+  }, [pathname, countryCode])
+
+  // Get region-specific FAQs only when needed
+  const regionFAQs = useMemo(() => {
+    if (!shouldShowFAQs) return []
+    return customFAQs || commonFAQs[countryCode as keyof typeof commonFAQs] || commonFAQs.ae
+  }, [shouldShowFAQs, customFAQs, countryCode])
 
   // Store name based on region
-  const storeName = countryCode === 'ae' 
-    ? 'xGlobal Tents UAE' 
-    : countryCode === 'us' 
-    ? 'xGlobal Tents USA'
-    : 'xGlobal Tents'
+  const storeName = useMemo(() => {
+    return countryCode === 'ae' 
+      ? 'xGlobal Tents UAE' 
+      : countryCode === 'us' 
+      ? 'xGlobal Tents USA'
+      : 'xGlobal Tents'
+  }, [countryCode])
 
   return (
     <>
-      {/* Always include breadcrumbs */}
-      <BreadcrumbSchema items={breadcrumbs} />
+      {/* Only include breadcrumbs when needed */}
+      {shouldShowBreadcrumbs && <BreadcrumbSchema items={breadcrumbs} />}
 
-      {/* Store rating for main pages */}
+      {/* Store rating only for main pages */}
       {showStoreRating && (
         <StoreRatingSchema
           storeName={storeName}
@@ -59,18 +81,18 @@ export default function SEOWrapper({
         />
       )}
 
-      {/* Product schema for product pages */}
+      {/* Product schema only for product pages */}
       {product && (
         <ProductRatingSchema
           product={product}
           region={region}
           rating={4.5}
-          reviewCount={Math.floor(Math.random() * 20) + 5} // Dynamic review count
+          reviewCount={Math.floor(Math.random() * 20) + 5}
         />
       )}
 
-      {/* FAQ schema */}
-      <FAQSchema faqs={regionFAQs} />
+      {/* FAQ schema only when needed */}
+      {shouldShowFAQs && regionFAQs.length > 0 && <FAQSchema faqs={regionFAQs} />}
 
       {children}
     </>

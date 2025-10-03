@@ -63,7 +63,7 @@ export default function StoreRatingSchema({
     <Script
       id="store-rating-schema"
       type="application/ld+json"
-      strategy="afterInteractive"
+      strategy="lazyOnload"
       dangerouslySetInnerHTML={{
         __html: JSON.stringify(localBusinessSchema)
       }}

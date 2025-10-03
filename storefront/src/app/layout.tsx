@@ -1,7 +1,6 @@
 import { getBaseURL } from "@lib/util/env"
 import { Metadata } from "next"
 import "styles/globals.css"
-import "./styles.css"
 import type { Viewport } from 'next'
  
 export const viewport: Viewport = {

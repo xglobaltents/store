@@ -27,8 +27,8 @@ export default function StoreRatingSchema({
   const defaultAddress = {
     street: "Technopark - Mina Jebel Ali",
     city: "Dubai", 
-    country: "United Arab Emirates",
-    postalCode: ""
+    country: "AE",
+    postalCode: "00000"
   }
 
   const storeAddress = address || defaultAddress
@@ -45,7 +45,7 @@ export default function StoreRatingSchema({
       "streetAddress": storeAddress.street,
       "addressLocality": storeAddress.city,
       "addressCountry": storeAddress.country,
-      ...(storeAddress.postalCode && { "postalCode": storeAddress.postalCode })
+      "postalCode": storeAddress.postalCode
     },
     "aggregateRating": {
       "@type": "AggregateRating",

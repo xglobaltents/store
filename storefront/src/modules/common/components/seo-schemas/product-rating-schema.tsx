@@ -48,6 +48,41 @@ export default function ProductRatingSchema({
       "seller": {
         "@type": "Organization",
         "name": "xGlobal Tents"
+      },
+      "hasMerchantReturnPolicy": {
+        "@type": "MerchantReturnPolicy",
+        "applicableCountry": region?.countries?.[0]?.iso_2 || "AE",
+        "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
+        "merchantReturnDays": 30,
+        "returnMethod": "https://schema.org/ReturnByMail",
+        "returnFees": "https://schema.org/FreeReturn"
+      },
+      "shippingDetails": {
+        "@type": "OfferShippingDetails",
+        "shippingRate": {
+          "@type": "MonetaryAmount",
+          "value": currencyCode === 'AED' ? "0.00" : "0.00",
+          "currency": currencyCode
+        },
+        "shippingDestination": {
+          "@type": "DefinedRegion",
+          "addressCountry": region?.countries?.[0]?.iso_2 || "AE"
+        },
+        "deliveryTime": {
+          "@type": "ShippingDeliveryTime",
+          "handlingTime": {
+            "@type": "QuantitativeValue",
+            "minValue": 1,
+            "maxValue": 2,
+            "unitCode": "DAY"
+          },
+          "transitTime": {
+            "@type": "QuantitativeValue",
+            "minValue": 3,
+            "maxValue": 7,
+            "unitCode": "DAY"
+          }
+        }
       }
     },
     "aggregateRating": {

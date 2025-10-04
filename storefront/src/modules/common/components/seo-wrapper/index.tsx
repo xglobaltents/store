@@ -28,7 +28,7 @@ export default function SEOWrapper({
   region,
   customFAQs,
   showStoreRating = false, // Changed default to false
-  storeRating = 4.8,
+  storeRating = 4.9,
   storeReviewCount = 156
 }: SEOWrapperProps) {
   const params = useParams()

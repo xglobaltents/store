@@ -67,7 +67,7 @@ export default function RootLayout(props: { children: React.ReactNode }) {
             zIndex: 1
           }}
         >
-          <SEOWrapper>
+          <SEOWrapper showStoreRating={true}>
             {props.children}
           </SEOWrapper>
         </main>

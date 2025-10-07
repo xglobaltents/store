@@ -2,6 +2,7 @@ import { Metadata } from "next"
 
 import FeaturedProducts from "@modules/home/components/featured-products"
 import Hero from "@modules/home/components/hero"
+import CustomerReviews from "@modules/home/components/customer-reviews"
 import { getCollectionsWithProducts } from "@lib/data/collections"
 import { getRegion } from "@lib/data/regions"
 
@@ -49,6 +50,7 @@ export default async function Home({
           <FeaturedProducts collections={collections} region={region} />
         </ul>
       </div>
+      <CustomerReviews />
     </>
   )
 }

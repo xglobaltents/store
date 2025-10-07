@@ -3,14 +3,19 @@ import { getCollectionsList } from "@lib/data/collections"
 import { Text, clx } from "@medusajs/ui"
 
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
+import TrustBadges from "@modules/layout/components/trust-badges"
+import BusinessInfo from "@modules/common/components/business-info"
 
 export default async function Footer() {
   const { collections } = await getCollectionsList(0, 6)
   const { product_categories } = await getCategoriesList(0, 6)
 
   return (
-    <footer className="border-t border-ui-border-base w-full">
-      <div className="content-container flex flex-col w-full">
+    <>
+      <TrustBadges />
+      <BusinessInfo />
+      <footer className="border-t border-ui-border-base w-full">
+        <div className="content-container flex flex-col w-full">
         <div className="flex flex-col gap-y-6 xsmall:flex-row items-start justify-between py-40">
           <div>
             <LocalizedClientLink
@@ -165,5 +170,6 @@ export default async function Footer() {
         </div>
       </div>
     </footer>
+    </>
   )
 }

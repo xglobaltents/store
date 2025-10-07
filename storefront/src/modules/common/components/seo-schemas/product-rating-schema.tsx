@@ -47,7 +47,25 @@ export default function ProductRatingSchema({
       "availability": product.status === 'published' ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
       "seller": {
         "@type": "Organization",
-        "name": "xGlobal Tents"
+        "name": "xGlobal Tents LLC",
+        "url": "https://xglobal-tents.app",
+        "logo": "https://xglobal-tents.app/logos/logo.webp",
+        "telephone": "+971-04-836-9499",
+        "email": "cs@xglobal-tents.com",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Technopark - Mina Jebel Ali",
+          "addressLocality": "Dubai",
+          "addressCountry": "AE",
+          "postalCode": "00000"
+        },
+        "taxID": "TRN-100000000000003",
+        "priceRange": "$$",
+        "hasCredential": {
+          "@type": "EducationalOccupationalCredential",
+          "credentialCategory": "certification",
+          "name": "ISO 9001:2015"
+        }
       },
       "hasMerchantReturnPolicy": {
         "@type": "MerchantReturnPolicy",

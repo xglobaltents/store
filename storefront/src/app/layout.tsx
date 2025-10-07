@@ -5,8 +5,6 @@ import "styles/globals.css"
 import "./styles.css"
 import type { Viewport } from 'next'
 import SEOWrapper from "@modules/common/components/seo-wrapper"
-import OrganizationSchema from "@modules/common/components/seo-schemas/organization-schema"
-import SSLBadge from "@modules/common/components/ssl-badge"
  
 export const viewport: Viewport = {
   width: 'device-width',
@@ -61,8 +59,6 @@ export default function RootLayout(props: { children: React.ReactNode }) {
             gtag('config', 'GT-55B7X2DR');
           `}
         </Script>
-        {/* Organization Schema */}
-        <OrganizationSchema />
         <main 
           className="relative" 
           style={{ 
@@ -71,11 +67,10 @@ export default function RootLayout(props: { children: React.ReactNode }) {
             zIndex: 1
           }}
         >
-          <SEOWrapper showStoreRating={true}>
+          <SEOWrapper>
             {props.children}
           </SEOWrapper>
         </main>
-        <SSLBadge />
         <div id="modal-root" style={{ position: 'relative', zIndex: 50 }} />
       </body>
     </html>

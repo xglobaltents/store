@@ -143,7 +143,7 @@ export default function OrganizationSchema({ countryCode = 'ae' }: OrganizationS
     <Script
       id="organization-schema"
       type="application/ld+json"
-      strategy="lazyOnload"
+      strategy="afterInteractive" // Load after page is interactive
       dangerouslySetInnerHTML={{
         __html: JSON.stringify(organizationSchema)
       }}

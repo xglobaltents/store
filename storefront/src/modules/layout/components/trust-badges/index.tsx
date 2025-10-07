@@ -2,13 +2,13 @@ import Image from 'next/image'
 
 export default function TrustBadges() {
   return (
-    <div className="bg-gray-50 py-8 border-t border-gray-200">
+    <div className="bg-gray-50 py-6 border-t border-gray-200"> {/* Reduced padding */}
       <div className="content-container">
-        <div className="text-center mb-6">
-          <h3 className="text-lg font-semibold text-gray-900">Why Shop With xGlobal Tents?</h3>
+        <div className="text-center mb-4"> {/* Reduced margin */}
+          <h3 className="text-base font-semibold text-gray-900">Why Shop With xGlobal Tents?</h3> {/* Smaller heading */}
         </div>
         
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4"> {/* Reduced gap */}
           {/* SSL Secured */}
           <div className="flex flex-col items-center text-center">
             <div className="w-16 h-16 mb-3 flex items-center justify-center bg-green-100 rounded-full">
@@ -17,7 +17,7 @@ export default function TrustBadges() {
               </svg>
             </div>
             <h4 className="font-medium text-sm">SSL Secured</h4>
-            <p className="text-xs text-gray-600 mt-1">100% Safe & Secure Shopping</p>
+            <p className="text-xs text-gray-600 mt-1">256-bit Encryption</p>
           </div>
 
           {/* Verified Business */}

@@ -10,6 +10,7 @@ import {
   ProductRatingSchema,
   commonFAQs 
 } from '@modules/common/components/seo-schemas'
+import OrganizationSchema from '@modules/common/components/seo-schemas/organization-schema'
 import { useBreadcrumbs } from '@lib/hooks/use-breadcrumbs'
 
 interface SEOWrapperProps {
@@ -27,7 +28,7 @@ export default function SEOWrapper({
   product,
   region,
   customFAQs,
-  showStoreRating = false, // Changed default to false
+  showStoreRating = false, // Only show on specific pages
   storeRating = 4.9,
   storeReviewCount = 156
 }: SEOWrapperProps) {
@@ -68,6 +69,9 @@ export default function SEOWrapper({
 
   return (
     <>
+      {/* Organization schema only on homepage when store rating is shown */}
+      {showStoreRating && <OrganizationSchema countryCode={countryCode} />}
+      
       {/* Only include breadcrumbs when needed */}
       {shouldShowBreadcrumbs && <BreadcrumbSchema items={breadcrumbs} />}
 

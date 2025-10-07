@@ -46,7 +46,7 @@ const reviews = [
 ]
 
 export default function CustomerReviews() {
-  const [visibleReviews, setVisibleReviews] = useState(3)
+  const [visibleReviews, setVisibleReviews] = useState(2) // Start with only 2 reviews
 
   const showMoreReviews = () => {
     setVisibleReviews(prev => Math.min(prev + 3, reviews.length))

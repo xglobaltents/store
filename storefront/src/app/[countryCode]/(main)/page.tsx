@@ -3,6 +3,7 @@ import { Metadata } from "next"
 import FeaturedProducts from "@modules/home/components/featured-products"
 import Hero from "@modules/home/components/hero"
 import CustomerReviews from "@modules/home/components/customer-reviews"
+import SEOWrapper from "@modules/common/components/seo-wrapper"
 import { getCollectionsWithProducts } from "@lib/data/collections"
 import { getRegion } from "@lib/data/regions"
 
@@ -43,7 +44,7 @@ export default async function Home({
   }
 
   return (
-    <>
+    <SEOWrapper showStoreRating={true}>
       <Hero region={region} />
       <div className="py-12">
         <ul className="flex flex-col gap-x-6">
@@ -51,6 +52,6 @@ export default async function Home({
         </ul>
       </div>
       <CustomerReviews />
-    </>
+    </SEOWrapper>
   )
 }

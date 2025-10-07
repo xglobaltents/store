@@ -2,9 +2,9 @@ import LocalizedClientLink from "@modules/common/components/localized-client-lin
 
 export default function BusinessInfo() {
   return (
-    <div className="bg-white py-12 border-t">
+    <div className="bg-white py-8 border-t"> {/* Reduced padding */}
       <div className="content-container">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6"> {/* Reduced gap */}
           {/* About Our Business */}
           <div>
             <h3 className="text-lg font-semibold mb-4">About xGlobal Tents</h3>

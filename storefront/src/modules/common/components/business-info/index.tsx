@@ -14,9 +14,9 @@ export default function BusinessInfo() {
               corporate events, weddings, and industrial applications.
             </p>
             <div className="space-y-2 text-sm">
-              <p><strong>Trade License:</strong> DED-123456</p>
-              <p><strong>VAT Registration:</strong> TRN-100000000000003</p>
-              <p><strong>Chamber of Commerce:</strong> Dubai Chamber Member</p>
+              <p><strong>Established:</strong> 2010</p>
+              <p><strong>Business Type:</strong> Manufacturing & Trading LLC</p>
+              <p><strong>Certifications:</strong> ISO 9001:2015</p>
             </div>
           </div>
 
@@ -27,9 +27,9 @@ export default function BusinessInfo() {
               <div>
                 <p className="font-medium">Registered Office:</p>
                 <p className="text-gray-600">xGlobal Tents LLC</p>
-                <p className="text-gray-600">Technopark - Mina Jebel Ali</p>
-                <p className="text-gray-600">Dubai, UAE</p>
-                <p className="text-gray-600">P.O. Box: 00000</p>
+                <p className="text-gray-600">Jabal Ali Industrial Third</p>
+                <p className="text-gray-600">National Industries Park</p>
+                <p className="text-gray-600">Dubai, United Arab Emirates</p>
               </div>
               <div>
                 <p className="font-medium mt-4">Business Hours:</p>
@@ -46,8 +46,8 @@ export default function BusinessInfo() {
             <div className="space-y-3 text-sm">
               <div>
                 <p className="font-medium">Contact Us:</p>
-                <p className="text-gray-600">Phone: +971-04-836-9499</p>
-                <p className="text-gray-600">WhatsApp: +971-04-836-9499</p>
+                <p className="text-gray-600">Phone: 04 836 9499</p>
+                <p className="text-gray-600">WhatsApp: +971 4 836 9499</p>
                 <p className="text-gray-600">Email: cs@xglobal-tents.com</p>
               </div>
               <div className="mt-4">
@@ -59,7 +59,7 @@ export default function BusinessInfo() {
                     </LocalizedClientLink>
                   </li>
                   <li>
-                    <LocalizedClientLink href="/terms-of-use" className="text-blue-600 hover:underline">
+                    <LocalizedClientLink href="/terms-of-service" className="text-blue-600 hover:underline">
                       Terms of Service
                     </LocalizedClientLink>
                   </li>
@@ -69,7 +69,7 @@ export default function BusinessInfo() {
                     </LocalizedClientLink>
                   </li>
                   <li>
-                    <LocalizedClientLink href="/refund-policy" className="text-blue-600 hover:underline">
+                    <LocalizedClientLink href="/return-policy" className="text-blue-600 hover:underline">
                       Returns & Refunds
                     </LocalizedClientLink>
                   </li>

@@ -110,38 +110,32 @@ export default async function Footer() {
                 </ul>
               </div>
             )}
-            <div className="flex flex-col gap-y-2 lg:col-start-3">
-              <span className="txt-small-plus txt-ui-fg-base">xGlobal Tents</span>
+            <div className="flex flex-col gap-y-2">
+              <span className="txt-small-plus txt-ui-fg-base">Customer Service</span>
               <ul className="grid grid-cols-1 gap-y-2 text-ui-fg-subtle txt-small">
                 <li>
-                  <a
-                    href="https://xglobal-tents.com/"
-                    target="_blank"
-                    rel="noreferrer"
+                  <LocalizedClientLink
+                    href="/contact"
                     className="hover:text-ui-fg-base"
                   >
-                    xGlobal Tents UAE
-                  </a>
+                    Contact Us
+                  </LocalizedClientLink>
                 </li>
                 <li>
-                  <a
-                    href="https://xglobal.media/"
-                    target="_blank"
-                    rel="noreferrer"
+                  <LocalizedClientLink
+                    href="/faq"
                     className="hover:text-ui-fg-base"
                   >
-                    Project Gallery
-                  </a>
+                    FAQ
+                  </LocalizedClientLink>
                 </li>
                 <li>
-                  <a
-                    href="https://tents-rental-ksa.com/"
-                    target="_blank"
-                    rel="noreferrer"
+                  <LocalizedClientLink
+                    href="/shipping-policy"
                     className="hover:text-ui-fg-base"
                   >
-                    xGlobal Tents KSA
-                  </a>
+                    Shipping Policy
+                  </LocalizedClientLink>
                 </li>
                 <li>
                   <LocalizedClientLink
@@ -153,11 +147,60 @@ export default async function Footer() {
                 </li>
                 <li>
                   <LocalizedClientLink
+                    href="/reviews"
+                    className="hover:text-ui-fg-base"
+                  >
+                    Customer Reviews
+                  </LocalizedClientLink>
+                </li>
+              </ul>
+            </div>
+            <div className="flex flex-col gap-y-2">
+              <span className="txt-small-plus txt-ui-fg-base">About</span>
+              <ul className="grid grid-cols-1 gap-y-2 text-ui-fg-subtle txt-small">
+                <li>
+                  <LocalizedClientLink
+                    href="/about"
+                    className="hover:text-ui-fg-base"
+                  >
+                    About Us
+                  </LocalizedClientLink>
+                </li>
+                <li>
+                  <LocalizedClientLink
+                    href="/terms-of-service"
+                    className="hover:text-ui-fg-base"
+                  >
+                    Terms of Service
+                  </LocalizedClientLink>
+                </li>
+                <li>
+                  <LocalizedClientLink
                     href="/privacy-policy"
                     className="hover:text-ui-fg-base"
                   >
                     Privacy Policy
                   </LocalizedClientLink>
+                </li>
+                <li>
+                  <a
+                    href="https://xglobal-tents.com/"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="hover:text-ui-fg-base"
+                  >
+                    Corporate Site
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://xglobal.media/"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="hover:text-ui-fg-base"
+                  >
+                    Project Gallery
+                  </a>
                 </li>
               </ul>
             </div>

@@ -28,7 +28,7 @@ export default function TrustBadges() {
               </svg>
             </div>
             <h4 className="font-medium text-sm">Verified Business</h4>
-            <p className="text-xs text-gray-600 mt-1">UAE Trade License: 123456</p>
+            <p className="text-xs text-gray-600 mt-1">Established Since 2010</p>
           </div>
 
           {/* Customer Reviews */}

@@ -1,8 +1,6 @@
 'use client'
 
-import { Metadata } from "next"
 import { useState } from "react"
-import { ChevronDownIcon } from "@heroicons/react/24/outline"
 
 const faqs = [
   {
@@ -184,11 +182,16 @@ function FAQItem({ question, answer }: { question: string; answer: string }) {
         onClick={() => setIsOpen(!isOpen)}
       >
         <span className="font-medium text-gray-900 pr-4">{question}</span>
-        <ChevronDownIcon
+        <svg
           className={`w-5 h-5 text-gray-500 flex-shrink-0 transition-transform ${
             isOpen ? "rotate-180" : ""
           }`}
-        />
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+        </svg>
       </button>
       {isOpen && (
         <div className="px-2 pb-4">
@@ -224,11 +227,16 @@ export default function FAQ() {
                 }
               >
                 <h2 className="text-xl font-semibold text-gray-900">{category.category}</h2>
-                <ChevronDownIcon
+                <svg
                   className={`w-6 h-6 text-gray-500 transition-transform ${
                     openCategory === category.category ? "rotate-180" : ""
                   }`}
-                />
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
               </button>
 
               {openCategory === category.category && (

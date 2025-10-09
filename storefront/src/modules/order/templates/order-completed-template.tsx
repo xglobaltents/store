@@ -8,6 +8,7 @@ import OnboardingCta from "@modules/order/components/onboarding-cta"
 import OrderDetails from "@modules/order/components/order-details"
 import ShippingDetails from "@modules/order/components/shipping-details"
 import PaymentDetails from "@modules/order/components/payment-details"
+import GoogleCustomerReviews from "@modules/order/components/google-customer-reviews"
 import { HttpTypes } from "@medusajs/types"
 
 type OrderCompletedTemplateProps = {
@@ -45,6 +46,8 @@ export default function OrderCompletedTemplate({
           <Help />
         </div>
       </div>
+      {/* Google Customer Reviews Opt-in - Loaded with performance optimization */}
+      <GoogleCustomerReviews order={order} />
     </div>
   )
 }
